@@ -16,7 +16,7 @@ def detect_face(path):
     fault = []
     # window = dlib.image_window()
     for photo in photos:
-        target = cv2.imread(path + '/' + photo)
+        target = cv2.imread(path + '/' + photo,  cv2.IMREAD_COLOR)
         dets = detector(target, 1)  # 获取目标的特征点,第二个参数设置为1，否则当出现多张人脸时会仅显示三处
         if not dets:
             fault.append(photo)
@@ -24,15 +24,15 @@ def detect_face(path):
         '''window.clear_overlay()  # 清除显示窗
         window.set_image(target)  # 加载图片
         window.add_overlay(dets)  # 框选人脸'''
-        for k, d in enumerate(dets):
-            cv2.rectangle(target, (d.left(), d.top()), (d.right(), d.bottom()), (255, 0, 0), 2)
+        for index, face in enumerate(dets):
+            cv2.rectangle(target, (face.left(), face.top()), (face.right(), face.bottom()), (255, 0, 0), 2)
             # 参数设置： 目标文件，（左，上），（右，下），颜色，边框粗细
         dlib.save_image(target, path + '/result/' + photo)
     print('over')
     print(fault)
 
 
-detect_face(path_side)
+detect_face(path_normal)
 
 
 '''
