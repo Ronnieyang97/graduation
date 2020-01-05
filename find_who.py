@@ -4,15 +4,13 @@ import numpy as np
 from models import *
 
 
-def find_person(photo):
-    img = cv2.imread('photos/find_who/' + photo)
+def pair(img):
     dets = detector(img, 1)
     target = []
     for index, face in enumerate(dets):
         shape = shape_predictor(img, face)
         face_descriptor = face_rec_model.compute_face_descriptor(img, shape)  # 计算人脸的128维的向量
         target.append([i for i in face_descriptor])
-    global data
     result = []
     if target:  # 识别出的人脸
         for face in target:  # 对每个人脸进行比对
@@ -31,15 +29,17 @@ def find_person(photo):
             else:
                 result.append('unpaired')
         print(result)
-        cv2.imwrite('photos/find_who/result/' + '-'.join(result) + photo, img)
+        return '-'.join(result)
     else:
-        cv2.imwrite('photos/find_who/result/' + 'unrecognized' + photo, img)
+        return 'unrecognized'
 
 
 files = [file for file in os.listdir('photos/find_who') if file.endswith('.jpg')]
 
 
 for file in files:
-    find_person(file)
+    cv2.imwrite('photos/find_who/result/' + pair(cv2.imread('photos/find_who/' + file)) + file,
+                cv2.imread('photos/find_who/' + file))
+
     print(file + '  Done!')
 
