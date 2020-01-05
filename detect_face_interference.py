@@ -1,7 +1,7 @@
 import os
-import dlib
 import cv2
-import time
+import dlib
+from models import *
 
 
 path_glasses = 'photos/glasses'
@@ -12,7 +12,6 @@ path_side = 'photos/side'
 
 def detect_face(path):
     photos = [file for file in os.listdir(path) if file.endswith('.jpg')]
-    detector = dlib.get_frontal_face_detector()  # 初始化人脸检测器
     fault = []
     # window = dlib.image_window()
     for photo in photos:
