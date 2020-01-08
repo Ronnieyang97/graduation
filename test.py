@@ -1,21 +1,15 @@
-import dlib
-import cv2
+import pymongo
 
+test = pymongo.MongoClient("mongodb://localhost:27017/")
 
-test = cv2.imread("test3.JPG")
-detector = dlib.get_frontal_face_detector()  # 初始化人脸检测器
-window = dlib.image_window()
-dets = detector(test, 1)
-print("Number of faces detected: {}".format(len(dets)))
-for i, d in enumerate(dets):
-    print("Detection {}: Left: {} Top: {} Right: {} Bottom: {}".format(i, d.left(), d.top(), d.right(), d.bottom()))
+db = test['test_db']
 
-window.clear_overlay()  # Remove all overlays from the image_window
-window.set_image(test)  # Make the image_window display the given HOG detector’s filters
-window.add_overlay(dets)  # Add a list of rectangles to the image_window
+collection = db['test_collection']
 
+mydict = {"name": "John", "address": "Highway 37"}
 
-dlib.hit_enter_to_continue()  # 使图像停留
+mydict2 = [
+    {"name": "Amy", "address": "Apple st 652"},
+    {"name": "Hannah", "address": "Mountain 21"}]
 
-
-
+collection.insert(mydict)
