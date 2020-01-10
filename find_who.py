@@ -1,6 +1,6 @@
 import cv2
 import os
-import numpy as np
+import numpy
 from models import *
 
 
@@ -10,19 +10,20 @@ def pair(img):
     for index, face in enumerate(dets):
         shape = shape_predictor(img, face)
         face_descriptor = face_rec_model.compute_face_descriptor(img, shape)  # 计算人脸的128维的向量
-        target.append([i for i in face_descriptor])
+        target.append(numpy.array(face_descriptor))
     result = []
     if target:  # 识别出的人脸
         for face in target:  # 对每个人脸进行比对
-            temp = []
-            for name, vector in data:
-                if np.linalg.norm(np.array(face) - np.array(vector)) < 0.6:
-                    temp.append([name, np.linalg.norm(np.array(face) - np.array(vector))])
-                else:
-                    continue
-            if temp:  # 在阈值0.6的条件下，找出相似度最高的选项
+            length = numpy.linalg.norm(face)
+            temp = [[x['name'], x['vector']] for x in main_sheet.find({'length': {'$lt': length + 0.6,
+                                                                                  '$gt': length - 0.6}})]
+            temp1 = []
+            for name, vector in temp:
+                if numpy.linalg.norm(face - numpy.array(vector)) < 0.6:
+                    temp1.append([name, numpy.linalg.norm(face - numpy.array(vector))])
+            if temp1:  # 在阈值0.6的条件下，找出相似度最高的选项
                 similar = ['', 0.6]
-                for i in temp:
+                for i in temp1:
                     if i[1] < similar[1]:
                         similar = i
                 result.append(similar[0])

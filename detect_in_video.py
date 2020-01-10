@@ -1,4 +1,4 @@
-import numpy as np
+import numpy
 import cv2
 from models import *
 
@@ -6,30 +6,32 @@ from models import *
 def find(frame):
     dets = detector(frame, 1)
     if not dets:
-        return 'none'
+        return 'no face'
     else:
         target = []
         for index, face in enumerate(dets):
             shape = shape_predictor(frame, face)
             face_descriptor = face_rec_model.compute_face_descriptor(frame, shape)  # 计算人脸的128维的向量
-            target.append([i for i in face_descriptor])
+            target.append(list(face_descriptor))
         result = []
         if target:  # 识别出的人脸
             for face in target:  # 对每个人脸进行比对
-                temp = []
-                for name, vector in data:
-                    if np.linalg.norm(np.array(face) - np.array(vector)) < 0.6:
-                        temp.append([name, np.linalg.norm(np.array(face) - np.array(vector))])
+                for face in target:  # 对每个人脸进行比对
+                    length = numpy.linalg.norm(face)
+                    temp = [[x['name'], x['vector']] for x in main_sheet.find({'length': {'$lt': length + 0.6,
+                                                                                          '$gt': length - 0.6}})]
+                    temp1 = []
+                    for name, vector in temp:
+                        if numpy.linalg.norm(face - numpy.array(vector)) < 0.6:
+                            temp1.append([name, numpy.linalg.norm(face - numpy.array(vector))])
+                    if temp1:  # 在阈值0.6的条件下，找出相似度最高的选项
+                        similar = ['', 0.6]
+                        for i in temp1:
+                            if i[1] < similar[1]:
+                                similar = i
+                        result.append(similar[0])
                     else:
-                        continue
-                if temp:  # 在阈值0.6的条件下，找出相似度最高的选项
-                    similar = ['', 0.6]
-                    for i in temp:
-                        if i[1] < similar[1]:
-                            similar = i
-                    result.append(similar[0])
-                else:
-                    result.append('unpaired')
+                        result.append('unpaired')
             return '-'.join(result)
         else:
             return 'unrecognized'
