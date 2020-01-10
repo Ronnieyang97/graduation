@@ -1,11 +1,11 @@
 基于Python的人脸识别技术
 摘要：
-随着计算机技术的高速发展和人们安全意识的不断提高，传统的身份识别手段已经不能满足人们的日常需求，因此生物特征识别应运而生，它主要运用计算机视觉、图像处理等技术来提取人类的生理特征，并通过深度学习提高识别的准确性和抗干扰性。在多种不同的生物特征识别方法中，人脸识别的方式更为自然，且具有非接触性、非强制性、高并发性和简便性等特点，同时也能运用至证件核实、身份识别、人事考勤等诸多实际领域。Dlib和OpenCV是开源的C++工具库，通过pythonAPI可以调用到图像处理的很多通用算法，可以很便捷地应用于人脸识别技术。python作为一门动态语言，拥有极高地开发效率和基于不同场景和需求完成对程序地开发地能力，因此本文使用python和Dlib、OpenCV来完成对人脸识别程序地开发。程序中结合SURF、HOG和FHOG三种特征算法有机结合实现人脸68特征点地提取，用已训练好地模型进行68特征点至128维向量地转化，运用轻量级数据库sqlite存储人脸数据，运用pycharm搭建了基于python的人脸识别程序，具有识别图片中人脸的位置并比对数据库中的资料判断人脸身份；通过摄像头实时检测是否有人脸出现并识别其身份；通过图片向数据库中新增人脸身份信息等功能。本文对程序各个模块和整体流程也进行了测试，测试结果良好，基本完整实现了基于python的人脸识别技术。
+随着计算机技术的高速发展和人们安全意识的不断提高，传统的身份识别手段已经不能满足人们的日常需求，因此生物特征识别应运而生，它主要运用计算机视觉、图像处理等技术来提取人类的生理特征，并通过深度学习提高识别的准确性和抗干扰性。在多种不同的生物特征识别方法中，人脸识别的方式更为自然，且具有非接触性、非强制性、高并发性和简便性等特点，同时也能运用至证件核实、身份识别、人事考勤等诸多实际领域。Dlib和OpenCV是开源的C++工具库，通过pythonAPI可以调用到图像处理的很多通用算法，可以很便捷地应用于人脸识别技术。python作为一门动态语言，拥有极高地开发效率和基于不同场景和需求完成对程序地开发地能力，因此本文使用python和Dlib、OpenCV来完成对人脸识别程序地开发。程序中结合SURF、HOG和FHOG三种特征算法有机结合实现人脸68特征点地提取，用已训练好地模型进行68特征点至128维向量地转化，运用非关系型数据库mongoDB存储人脸数据，运用pycharm搭建了基于python的人脸识别程序，具有识别图片中人脸的位置并比对数据库中的资料判断人脸身份；通过摄像头实时检测是否有人脸出现并识别其身份；通过图片向数据库中新增人脸身份信息等功能。本文对程序各个模块和整体流程也进行了测试，测试结果良好，基本完整实现了基于python的人脸识别技术。
 关键词：
 python，dlib，opencv，人脸识别
 
 Abstract
-With the rapid development of computer technology and the continuous improvement of people's security awareness, traditional identification methods can no longer meet people's daily needs. Therefore, biometric identification came into being. It mainly uses computer vision, image processing and other technologies to extract human Physiological characteristics, and improve the accuracy and anti-interference of recognition through deep learning. Among the many different biometric recognition methods, the face recognition method is more natural and has the characteristics of non-contact, non-mandatory, high concurrency and simplicity. It can also be applied to document verification, identity recognition, Many practical areas such as personnel attendance. Dlib and OpenCV are open source C ++ tool libraries. Many common algorithms for image processing can be called through pythonAPI, which can be easily applied to face recognition technology. As a dynamic language, Python has extremely high development efficiency and the ability to complete program development based on different scenarios and requirements. Therefore, this article uses Python, Dlib, and OpenCV to complete the development of face recognition programs. The program combines the three feature algorithms of SURF, HOG, and FHOG to realize the extraction of 68 feature points on the face. The trained model is used to transform the 68 feature points to 128-dimensional vectors. The lightweight database sqlite is used to store the face data. , Using pycharm to build a python-based face recognition program, which recognizes the position of the face in the picture and compares the information in the database to determine the identity of the face; detects whether a human face appears and recognizes its identity in real time through the camera; to the database through the picture Added features such as face identity information. This article also tested each module and the overall process of the program. The test results are good, and the face recognition technology based on python is basically completely implemented.
+With the rapid development of computer technology and the continuous improvement of people's security awareness, traditional identification methods can no longer meet people's daily needs. Therefore, biometric identification came into being. It mainly uses computer vision, image processing and other technologies to extract human Physiological characteristics, and improve the accuracy and anti-interference of recognition through deep learning. Among the many different biometric recognition methods, the face recognition method is more natural and has the characteristics of non-contact, non-mandatory, high concurrency and simplicity. It can also be applied to document verification, identity recognition, Many practical areas such as personnel attendance. Dlib and OpenCV are open source C ++ tool libraries. Many common algorithms for image processing can be called through pythonAPI, which can be easily applied to face recognition technology. As a dynamic language, Python has extremely high development efficiency and the ability to complete program development based on different scenarios and requirements. Therefore, this article uses Python, Dlib, and OpenCV to complete the development of face recognition programs. The program combines the three feature algorithms of SURF, HOG, and FHOG to realize the extraction of 68 feature points on the face. The trained model is used to transform the 68 feature points to 128-dimensional vectors. The nosql database mongoDB is used to store the face data. , Using pycharm to build a python-based face recognition program, which recognizes the position of the face in the picture and compares the information in the database to determine the identity of the face; detects whether a human face appears and recognizes its identity in real time through the camera; to the database through the picture Added features such as face identity information. This article also tested each module and the overall process of the program. The test results are good, and the face recognition technology based on python is basically completely implemented.
 Keywords:
 Python，opencv， dlib， Face recognition
 
@@ -46,7 +46,7 @@ Python，opencv， dlib， Face recognition
 进入二十一世纪后，人脸识别技术的研究重心逐渐从识别人脸的方法转向了人脸识别的精度，研究者们力图消除光照、肤色或复杂背景对识别结果的影响。同时，随着神经网络和深度学习的兴起，人脸识别技术可以利用深度学习从原始图像空间直接学习特征的表示方法。
 
 1.3论文研究内容和结构
-本文对基于python的人脸识别技术进行了设计与实现。利用OpenCV和Dlib两个库开发实现人脸识别、提取特征点并转化为128维向量的处理，基于pycharm进行程序的搭建，轻量级数据库sqlite储存数据，numpy进行数据分析，最终实现人脸识别技术的程序。
+本文对基于python的人脸识别技术进行了设计与实现。利用OpenCV和Dlib两个库开发实现人脸识别、提取特征点并转化为128维向量的处理，基于pycharm进行程序的搭建，非关系型数据库mengoDB储存数据，numpy进行数据分析，最终实现人脸识别技术的程序。
 第一章	绪论。介绍了人脸识别技术研究的背景和意义，同时还对论文研究的主要内容和总体结构进行了详细的介绍。
 第二章	系统相关技术的介绍。对OpenCV和Dlib进行简单介绍，并分析python语言的优势，同时也对sqlite和numpy做了简要概述。
 第三章	系统设计。介绍了系统的功能设计、模块设计，对系统将要实现的具体功能作相关介绍和阐述。
@@ -120,24 +120,301 @@ OpenCV的应用领域包括：
 •	运动追踪
 •	增强现实
 
-2.4 sqlite简介
-SQLite是关系数据库管理系统包含在（RDBMS）一个C库。与许多其他数据库管理系统相比，SQLite不是客户端服务器数据库引擎。而是将其嵌入到最终程序中。
-SQLite是ACID兼容的，并且实现了大多数SQL标准，通常遵循PostgreSQL语法。但是，SQLite使用的动态和弱类型SQL语法不能保证域的完整性。这意味着，例如，可以将字符串插入定义为整数的列中。SQLite将尝试在适当的情况下在格式之间转换数据，在这种情况下，将字符串“ 123”转换为整数，但不保证此类转换，如果无法进行转换，则将按原样存储数据。
-SQLite是一种流行的选择，它是用于Web应用程序（例如Web浏览器）中本地/客户端存储的嵌入式数据库软件。可以说，它是部署最广泛的数据库引擎，因为当今它被数个广泛的浏览器，操作系统和嵌入式系统（例如移动电话）使用。SQLite具有对许多编程语言的绑定。
+2.4 mengoDB简介
+MongoDB是一个跨平台的面向文档的数据库程序。分类为NoSQL数据库程序，MongoDB中的记录是一个文档，它是由字段和值对组成的数据结构。MongoDB文档类似于JSON对象。字段的值可以包括其他文档，数组和文档数组。使用文档的优点是：文档（即对象）对应于许多编程语言中的本机数据类型;嵌入式文档和数组减少了对昂贵连接的需求;动态模式支持流畅的多态性。
+主要功能:
+高性能:
+MongoDB提供高性能的数据持久性。尤其是对嵌入式数据模型的支持减少了数据库系统上的i/o活动;索引支持更快的查询，并且可以包括来自嵌入式文档和数组的键。
+丰富的查询语言:
+MongoDB支持丰富的查询语言以支持读取和写入操作（CRUD）以及：资料汇总;文本搜索和地理空间查询。
+高可用性
+MongoDB的复制工具（称为副本集）提供：自动故障转移;数据冗余。
+副本集是一组维护相同数据集的MongoDB服务器，可提供冗余并提高数据可用性。
+水平可伸缩性:
+MongoDB提供水平可伸缩性作为其核心功能的一部分：分片在一组计算机集群分布数据。
+支持多种存储引擎:
+MongoDB支持多个存储引擎：WiredTiger存储引擎（包括对静态加密的支持）;内存中存储引擎。
 
 2.5 本章小结
 本章主要介绍了本文所使用的相关技术，介绍了基础编程语言Python，以及实现人脸识别技术的主要依赖库Dlib，及其主要功能与特点。
 
 第三章 系统设计
-3.1 系统的功能性需求分析
+3.1 程序的功能性需求分析
 3.1.1 读入待识别的图像
 实现人脸识别技术的第一步就是要将待识别的图像读入程序，以待用于人脸图像的识别和后续特征点的提取等操作。
 读入单幅图片的功能是基于OpenCV的imread函数，它可以读取.JPG/.BMP/.JEPG/.PNG等多种格式的图片文件，并可以手动设置参数将图片转化为灰度、彩色等不同的格式。
 读入视屏文件的功能是基于OpenCV的VideoCapture函数，可以读取.AVI/.MPG等格式的视频文件，将该函数的参数直接设置为0则会直接从当前设备的默认摄像头获取实时录像数据，将参数设置为1则可以从外部连接的其他设备获取实时录像数据。
 
 3.1.2 识别人脸位置
-得到图像后，就需要识别出图片内人脸的位置，以此为依据来为后续提取特征点提供更精确的数据
+得到图像后，就需要识别出图片内人脸的位置，以此为依据来为后续提取特征点提供更精确的数据.
+确定人脸位置的功能基于Dlib的get_frontal_face_detector函数，该函数会将人脸在图片中的具体位置范围作为返回值返回，利用OpenCV中提供的框图函数rectangle则能将人脸框出并显示在图片上
 
-3.1. 人脸数据库
-想要识别人脸并判别其身份，建立一个可以储存人脸身份信息的数据库必不可少，基于本文涉及的数据库的数据总量不超过八个数量级，且不涉及跨进程并发、大数据集或远程服务，因此采用轻量级的本地型嵌入式数据库sqlite最为合适，可以在舍弃一些通用性数据库中包含的，但对本文无甚帮助的功能的情况下，提高运行效率。
-选取清晰度较高的正脸照，文件名命名为人名，将人脸数据转化为128维向量后以字符串的形式保存进数据库中，在没有特殊要求的情况下仅设置一张主表，且将人名设置为主键。
+3.1.3 将人脸图像转化为可计算的128维向量
+要进一步对人脸进行比对、辨别，则需要将人脸图片进一步处理为可计算的128维向量值
+该功能基于Dlib中提供的已经训练完成的图像预测和人脸识别模型，加载这两个模型后，即可将目标图片转化为128维的向量值
+
+3.1.4 人脸数据库
+想要识别人脸并判别其身份，建立一个可以储存人脸身份信息的数据库必不可少，非关系型数据库mongoDB是一个不错的选择
+选取清晰度较高的正脸照，文件名命名为人名，将人脸数据转化为128维向量后以字符串的形式保存进数据库中，主要存入三组数据人脸名字，人脸的128维向量和128维向量的欧氏长度（方便后续数据筛选）
+
+3.1.5 人脸数据比对
+人脸数据比对采用欧氏距离的方式，若两组128维特征向量的距离小于0.6（官方推荐的阈值），则可以认定为同一人
+
+3.2 程序的整体设计
+3.2.1 静态人脸测试模块
+在该模块中主要是为了检测人脸识别的准确性和能力，测试当脸部有不同程度的遮挡物（如眼镜、手等）时能否正确识别到人脸位置，当人脸的方向发生变化（如侧脸）能否正确检测到人脸。
+3.2.2 添加人脸数据到数据库模块
+该模块主要是为了添加可作为判别身份的128维向量数据和人名信息，通过对指定位置文件夹中文件的提取，并识别其中的人脸，将其转化为128维向量，储存到mongoDB中。
+3.2.3 静态人脸识别模块
+该模块主要是实现了提取图片中人脸的数据并于数据库中已有的信息比对，找出与其欧氏距离小于0.6并且最小的一组数据，输出其人名。
+3.2.4 动态人脸识别模块
+该模块主要实现在一段录像视频文件或摄像头得到的影像中识别出其中人脸的位置，并在数据库中找出与该人脸128维向量欧氏距离小于0.6且最近的一组数据，输出其人名。
+
+3.3 本章小结
+本章介绍了基于python的人脸识别技术的程序设计，人脸识别系统主要包含识别静态人脸，识别动态人脸，录入数据库和测试模块四个部分，其中人脸的识别和比对是本文的重要内容，基于python和Dlib来实现，数据库使用的是mongoDB，也就是应用很广泛的非关系型数据库，本文后续的程序实现就是基于本章的程序设计来完成的。
+
+第四章 程序实现
+4.1模块实现
+4.1.1 静态人脸测试模块
+本程序中将待测试的图片以不同风格分为三类：normal为普通情况无特殊遮挡的人脸；shelter为面部存在眼镜或手等遮挡物不同程度遮挡的人脸；side为方向不同的人脸，如侧脸或半侧脸等；将不同类型的照片依次放入对应特点的文件夹就可以开始测试了。
+静态人脸测试模块的第一步是从上述这些文件夹中读取图片，然后利用Dlib的人脸识别函数检测图片中所包含的人脸，如果识别出人脸，则将人脸框选并保存到对应文件夹（normal，shelter或side）下的result子文件夹。
+静态人脸测试模块的代码实现如下：
+models.py  该文件包含一些预编译的变量或函数，提高代码复用性
+import dlib
+import pymongo
+# 模型及初始化
+
+predictor_path = "models/shape_predictor_68_face_landmarks.dat"
+face_rec_model_path = "models/dlib_face_recognition_resnet_model_v1.dat"
+shape_predictor = dlib.shape_predictor(predictor_path)
+face_rec_model = dlib.face_recognition_model_v1(face_rec_model_path)
+
+detector = dlib.get_frontal_face_detector()
+
+connection = pymongo.MongoClient('localhost', 27017)
+db = connection['graduation']
+main_sheet = db['main']
+
+detect_face_interference.py 人脸检测测试模块
+import os
+import cv2
+from models import *  
+
+
+path_glasses = 'photos/glasses'
+path_normal = 'photos/normal'
+path_shelter = 'photos/shelter'
+path_side = 'photos/side'
+
+
+def detect_face(path):
+    photos = [file for file in os.listdir(path) if file.endswith('.jpg')]
+    fault = []
+    # window = dlib.image_window()
+    for photo in photos:
+        target = cv2.imread(path + '/' + photo,  cv2.IMREAD_COLOR)
+        dets = detector(target, 1)  # 获取目标的特征点,第二个参数设置为1，否则当出现多张人脸时会仅显示三处
+        if not dets:
+            fault.append(photo)
+            continue
+        '''window.clear_overlay()  # 清除显示窗
+        window.set_image(target)  # 加载图片
+        window.add_overlay(dets)  # 框选人脸'''
+        for index, face in enumerate(dets):
+            cv2.rectangle(target, (face.left(), face.top()), (face.right(), face.bottom()), (255, 0, 0), 2)
+            # 参数设置： 目标文件，（左，上），（右，下），颜色，边框粗细
+        dlib.save_image(target, path + '/result/' + photo)
+    print('over')
+    print(fault)
+
+
+detect_face(path_normal)
+detect_face(path_glasses)
+detect_face(path_shelter)
+detect_face(path_side)
+
+4.1.2 添加人脸数据到数据库模块
+本程序中数据库使用mongoDB，将指定文件夹add下的图片读取，检测其中的人脸，提取128维向量数据，以数组形式保存，同时计算出该128维向量的欧氏长度，以便后续查找时能避免无意义的计算，加快运行速度，最后以
+{'name': name, 'vector': vector,'length': length}的形式保存。
+代码实现如下：
+models.py
+import dlib
+import pymongo
+# 模型及初始化
+
+predictor_path = "models/shape_predictor_68_face_landmarks.dat"
+face_rec_model_path = "models/dlib_face_recognition_resnet_model_v1.dat"
+shape_predictor = dlib.shape_predictor(predictor_path)
+face_rec_model = dlib.face_recognition_model_v1(face_rec_model_path)
+
+detector = dlib.get_frontal_face_detector()
+
+connection = pymongo.MongoClient('localhost', 27017)
+db = connection['graduation']
+main_sheet = db['main']
+
+add_data.py
+import os
+import cv2
+from models import *
+import numpy
+
+
+def get_data(photo):
+    img = cv2.imread('add/' + photo)
+    name = photo.split('.jpg')[0]
+    dets = detector(img, 1)
+    for index, face in enumerate(dets):
+        shape = shape_predictor(img, face)
+        face_descriptor = face_rec_model.compute_face_descriptor(img, shape)
+        vector = list(face_descriptor)
+        length = numpy.linalg.norm(numpy.array(face_descriptor))
+        info = {'name': name, 'vector': vector, 'length': length}
+        main_sheet.insert_one(info)
+
+
+photos = [file for file in os.listdir('add') if file.endswith('.jpg')]
+for photo in photos:
+    get_data(photo)
+    print(photo, ' Done!')
+
+4.1.3 静态人脸识别模块
+本程序将提取制定文件夹find_who下待识别的图片，提取出其中人脸数据并与数据库中的文件相比对，查找出该人脸的身份
+实现代码如下：
+models.py
+import dlib
+import pymongo
+# 模型及初始化
+
+predictor_path = "models/shape_predictor_68_face_landmarks.dat"
+face_rec_model_path = "models/dlib_face_recognition_resnet_model_v1.dat"
+shape_predictor = dlib.shape_predictor(predictor_path)
+face_rec_model = dlib.face_recognition_model_v1(face_rec_model_path)
+
+detector = dlib.get_frontal_face_detector()
+
+connection = pymongo.MongoClient('localhost', 27017)
+db = connection['graduation']
+main_sheet = db['main']
+
+find_who.py
+import cv2
+import os
+import numpy
+from models import *
+
+
+def pair(img):
+    dets = detector(img, 1)
+    target = []
+    for index, face in enumerate(dets):
+        shape = shape_predictor(img, face)
+        face_descriptor = face_rec_model.compute_face_descriptor(img, shape)  # 计算人脸的128维的向量
+        target.append(numpy.array(face_descriptor))
+    result = []
+    if target:  # 识别出的人脸
+        for face in target:  # 对每个人脸进行比对
+            length = numpy.linalg.norm(face)
+            temp = [[x['name'], x['vector']] for x in main_sheet.find({'length': {'$lt': length + 0.6,
+                                                                                  '$gt': length - 0.6}})]
+            temp1 = []
+            for name, vector in temp:
+                if numpy.linalg.norm(face - numpy.array(vector)) < 0.6:
+                    temp1.append([name, numpy.linalg.norm(face - numpy.array(vector))])
+            if temp1:  # 在阈值0.6的条件下，找出相似度最高的选项
+                similar = ['', 0.6]
+                for i in temp1:
+                    if i[1] < similar[1]:
+                        similar = i
+                result.append(similar[0])
+            else:
+                result.append('unpaired')
+        print(result)
+        return '-'.join(result)
+    else:
+        return 'unrecognized'
+
+
+files = [file for file in os.listdir('photos/find_who') if file.endswith('.jpg')]
+
+
+for file in files:
+    cv2.imwrite('photos/find_who/result/' + pair(cv2.imread('photos/find_who/' + file)) + file,
+                cv2.imread('photos/find_who/' + file))
+
+    print(file + '  Done!')
+
+4.1.4 动态人脸识别模块
+本程序主要实现了对视频文件或摄像头获取的实时影像文件中的人脸的检测并比对数据库中的数据找出该人脸的身份
+models.py
+import dlib
+import pymongo
+# 模型及初始化
+
+predictor_path = "models/shape_predictor_68_face_landmarks.dat"
+face_rec_model_path = "models/dlib_face_recognition_resnet_model_v1.dat"
+shape_predictor = dlib.shape_predictor(predictor_path)
+face_rec_model = dlib.face_recognition_model_v1(face_rec_model_path)
+
+detector = dlib.get_frontal_face_detector()
+
+connection = pymongo.MongoClient('localhost', 27017)
+db = connection['graduation']
+main_sheet = db['main']
+
+detect_in_video.py
+import numpy
+import cv2
+from models import *
+
+
+def find(frame):
+    dets = detector(frame, 1)
+    if not dets:
+        return 'no face'
+    else:
+        target = []
+        for index, face in enumerate(dets):
+            shape = shape_predictor(frame, face)
+            face_descriptor = face_rec_model.compute_face_descriptor(frame, shape)  # 计算人脸的128维的向量
+            target.append(list(face_descriptor))
+        result = []
+        if target:  # 识别出的人脸
+            for face in target:  # 对每个人脸进行比对
+                for face in target:  # 对每个人脸进行比对
+                    length = numpy.linalg.norm(face)
+                    temp = [[x['name'], x['vector']] for x in main_sheet.find({'length': {'$lt': length + 0.6,
+                                                                                          '$gt': length - 0.6}})]
+                    temp1 = []
+                    for name, vector in temp:
+                        if numpy.linalg.norm(face - numpy.array(vector)) < 0.6:
+                            temp1.append([name, numpy.linalg.norm(face - numpy.array(vector))])
+                    if temp1:  # 在阈值0.6的条件下，找出相似度最高的选项
+                        similar = ['', 0.6]
+                        for i in temp1:
+                            if i[1] < similar[1]:
+                                similar = i
+                        result.append(similar[0])
+                    else:
+                        result.append('unpaired')
+            return '-'.join(result)
+        else:
+            return 'unrecognized'
+
+
+cap = cv2.VideoCapture(0)  # 获取摄像头
+# 如果要实现视频的读取，就将cap = cv2.VideoCapture('test.avi');循环条件改为cap.isOpened()
+
+while 1:
+    ret, frame = cap.read()  # 得到摄像头的参数
+    dets = detector(frame, 1)
+    for index, face in enumerate(dets):  # 人脸框图
+        cv2.rectangle(frame, (face.left(), face.top()), (face.right(), face.bottom()), (255, 0, 0), 2)
+    cv2.putText(frame, find(frame), (40, 50), cv2.FONT_HERSHEY_PLAIN, 2.0, (0, 0, 255), 2)  # 文本
+    cv2.imshow('frame', cv2.cvtColor(frame, cv2.IMREAD_COLOR))
+
+    if cv2.waitKey(1) & 0xFF == ord('q'):  # 输入q结束程序
+        break
+
+cap.release()
+cv2.destroyAllWindows()

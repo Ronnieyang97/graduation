@@ -31,7 +31,9 @@ def detect_face(path):
 
 
 detect_face(path_normal)
-
+detect_face(path_glasses)
+detect_face(path_shelter)
+detect_face(path_side)
 
 '''
 测试normal类型的人脸时成功率基本为100%；
