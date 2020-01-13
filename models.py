@@ -1,5 +1,6 @@
 import dlib
 import pymongo
+
 # 模型及初始化
 
 predictor_path = "models/shape_predictor_68_face_landmarks.dat"
