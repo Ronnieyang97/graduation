@@ -76,7 +76,7 @@ def suit(target):
         return 0
 
 
-targets = ['葛优', '刘欢', '廖凡']
+targets = ['彭于晏']
 result = []
 for i in targets:
     find_photo(i)
