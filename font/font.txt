@@ -1,0 +1,11 @@
+在使用matplotlib时，会发生中文无法正常显示的问题，原因在于没有正确的字体
+在python解释器的路径下（anaconda或其他），找到如C:\ProgramData\Anaconda3\Lib\site-packages\matplotlib\mpl-data\的路径
+该文件夹下有一个名为matplotlibrc的文件打开文件，将font.family         : sans-serif这一行的注释符号删除
+font.sans-serif：该改行删去注释符号，并且在后面添加Microsoft YaHei
+font.serif：该行删去注释符号
+打开fonts/ttf，将msyh.ttf文件放到该文件夹下，并双击运行安装
+删除用户文件夹下的.matplotlib文件夹
+在py中运行：
+from matplotlib.font_manager import _rebuild
+_rebuild()
+运行好后重启python即可

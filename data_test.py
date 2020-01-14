@@ -3,7 +3,8 @@ import os
 import cv2
 import xpinyin
 from models import *
-
+from matplotlib import pyplot
+import matplotlib as mpl
 import numpy
 import shutil
 
@@ -72,13 +73,21 @@ def suit(target):
         return len([x for x in result if x < 0.6]) / len(result)  # 返回成功率
 
     else:  # 数据库中没有该数据时则直接提示
-        print('no data！！！')
+        print('no data！！！' + target)
         return 0
 
 
-targets = ['彭于晏']
-result = []
+def draw(result):
+    pyplot.plot(list(result.keys()), list(result.values()))
+    pyplot.show()
+
+
+# ['姜文', '葛优', '周韵', '廖凡', 'federer', 'nadal', 'thiem', '彭于晏']
+
+targets = ['姜文', '葛优', '周韵', '廖凡', 'federer', 'nadal', 'thiem', '彭于晏']
+result = {}
 for i in targets:
-    find_photo(i)
-    result.append({i: suit(i)})
-print(result)
+    #find_photo(i)
+    result[i] = suit(i)
+
+draw(result)
