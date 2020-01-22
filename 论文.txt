@@ -138,6 +138,122 @@ MongoDB支持多个存储引擎：WiredTiger存储引擎（包括对静态加密
 2.5 本章小结
 本章主要介绍了本文所使用的相关技术，介绍了基础编程语言Python，以及实现人脸识别技术的主要依赖库Dlib，及其主要功能与特点。
 
+第三章 人脸识别技术的算法
+人脸识别技术主要可以分为四个部分：人脸检测（face detection),人脸对齐（face alignment），人脸校验（face verification）和人脸识别（face identification）。人脸检测是在待检测图片中判断是否有人脸存在，并且确定该人脸的位置；人脸对齐是在已经检测出有人脸存在的图像中寻找，诸如：眼睛、鼻子、嘴等特征的位置，并将其转化为特征点；人脸校检是判断两组不同的特征点是否是同一个人；人脸识别是将上述三个部分相结合，判断图像中人脸的身份。
+3.1 人脸检测
+人脸检测的基本流程主要可以分为：用大量的人脸和非人脸样本图像进行训练，得到解决这两个分类问题的人脸检测模板。由于人脸可能会出现在图像的任何位置，因此在检测人脸时需要自上至下，从左到右进行扫描，判断窗口中是否是人脸，这就是滑动窗口技术（sliding window）。因为图像中的人脸还存在大小问题，因此需要对其进行放大或缩小以此构建图像金字塔，由于采用滑动窗口扫描技术，并且对检测的图像还需要反复缩放，因此这个扫描的过程会花费大量的运行时间。同时待识别的图像中还可能会出现多个可能存在人脸的位置，因此还需要将检测的结果进行合并去重，此过程被成为非极大值抑制（NMS）。
+dlib在imageprocessing模块中定义了基于方向梯度直方图特征（Histogram of Oriented Gradient，HOG）和图像金字塔的多尺度目标检测方法，在拥有较高的准确率的同时也能保证一定的运行速度。
+3.1.1 object_detector.h
+目标检测函数，分别使用多种角度的检测函数找出待检测图像中的人脸的位置
+scanner.load(img);
+载入当前图像，并提取HOG特征
+
+std::vector<std::pair<double, rectangle> > dets;
+std::vector<rect_detection> dets_accum;
+被选中的区域，及其用于检测甄别的数值
+
+scanner.detect(w[i].get_detect_argument(), dets, thresh + adjust_threshold);
+获取被选中的区域
+
+temp.detection_confidence = dets[j].first-thresh;
+计算出被选中区域用于检测甄别的数值
+循环多次以得到不同角度下的数值，并使用非极大值抑制，以得到最准确的滑动窗口
+
+std::sort(dets_accum.rbegin(), dets_accum.rend());
+将计算得到的数据排序
+
+if (overlaps_any_box(final_dets, dets_accum[i].rect))
+             continue；
+final_dets.push_back(dets_accum[i]);
+若被选中的区域已经覆盖，则丢弃该区域
+
+3.1.2 scan_fhog_pyramid.h
+载入图像后以金字塔的形式提取HOG特征
+
+compute_fhog_window_size(width,height);
+金字塔顶端最小图像，与设置的HOG窗口大小相关
+
+impl::create_fhog_pyramid<Pyramid_type>(img, fe, feats, cell_size, height,
+										width, min_pyramid_layer_width, min_pyramid_layer_height,
+										max_pyramid_levels);
+计算图像金字塔，并将得到的HOG特征存入相应的位置
+
+do
+    {
+		rect = pyr.rect_down(rect);
+        ++levels;
+    } while(rect.width() >= min_pyramid_layer_width && 
+			rect.height() >= min_pyramid_layer_height &&
+            levels < max_pyramid_levels);
+根据待识别图像的大小计算金字塔层数
+
+if (feats.max_size() < levels)
+	feats.set_max_size(levels);
+   feats.set_size(levels);
+根据金字塔层数分配内存
+
+fe(img, feats[0], cell_size,filter_rows_padding,filter_cols_padding)；
+构建特征金字塔
+
+pyr(img, temp1);
+下采样， 并提取第一层的HOG特征；以此类推向下逐层提取第n层的HOG特征
+
+void impl_extract_fhog_features( const image_type& img_, 
+                                 out_type& hog, 
+                                 int cell_size,
+                                 int filter_rows_padding,
+                                 int filter_cols_padding ) 
+得到该图的HOG特征及所对应的向量
+
+3.1.3 detect_from_fhog_pyramid
+array2d<float> saliency_image;
+显著性系数图，系数越大，则对应位置包含目标可能性越高
+
+const rectangle area = apply_filters_to_fhog(w, feats[l], saliency_image);
+检测每一层，得到每一层的显著性系数图，及目标区域
+
+std::sort(dets.rbegin(), dets.rend(), compare_pair_rect);
+根据显著性系数排序
+
+3.2 人脸对齐
+人脸对齐的主要目标有两个：形状和特征点。形状是指人脸上有特征的位置，如眼睛、鼻子、嘴等；特征点就是构成形状的点集。人脸对齐的最终目标是在已经检测出的人脸上定位该人脸准确的形状。
+dlib主要使用基于回归的GBDT（ERT）算法提取特征点，该算法类似于随即森林，即将很多决策树联合在一起，其中每棵树的训练采用随机数量的样本和随机的特征。而GBDT（ERT）算法相比于随机森林的主要差别在于两点：1）每一棵树之间的关系是串行的而非并行，即后一棵树是建立在前一棵树的基础上的。2)每一棵树的节点上存的是残差，通过这些残差使形状不断地回归直到回归到真实地形状。
+采用的人脸模型是基于ResNet训练的人脸识别模型
+得到人脸的图像数据后先要对人脸作提取处理，利用仿射变换将人脸地关键点仿射到单位空间已解决脸的尺寸问题，并将数据的人脸关键点作平均处理以得到初始人脸形状，以此为基础进行残差计算拟合人脸关键点。先在初始人脸的关键点的范围内随机采样作为对应的特征像素点，选择最接近的初始关键点作为锚，计算偏差。在对其作最小化之间的距离平方操作，得到最优变换，该最优变换作用于偏差，加上自身的位置信息可以得到当前关键点的特征像素点。
+得到特征像素点后开始构建残差树，计算出当前关键点与目标关键点的偏差。通过特征像素点，利用退火的方法选择多个分割点，进行左右树划分，选择最小化划分后的偏差为最优分割点。分割样本，基于样本的平均残差更新当前关键点位置。回到上一步骤，重新选择出特征关键点，拟合下一颗残差树，最终综合所有残差树的结果得到关键点位置。
+
+3.2.1 深度残差网络
+在对齐人脸的过程中使用的两个核心模型shape_predictor_68_face_landmarks.dat和dlib_face_recognition_resnet_model_v1.dat是基于ResNet训练好的模型，ResNet是在【1】中所提出的深度残差网络，通过网络的形式对残差进行深度学习，相较于传统的CNN方式，在深度和精度上都得到极大提升。
+在深度神经网络的训练中，存在一个致命的纰漏。即所谓的‘退化’：当模型的层次加深时，由于梯度消失和梯度爆炸的原因，更深层次的模型却产生了比起浅层次模型更高的错误率，这种现象出现的症结在于当模型深度化时，SGD的优化下降了。针对这个问题，【1】中提出了使用残差块能够训练更深的神经网络，即在一个常规性的浅层次模型上添加新的基于恒等映射（identity mapping）的层，而这个层的结构即残差块（residual），如图1所示
+在增加这样一个恒等映射后，原函数F(x)将转换成H(x)=F(x)+x,这两种表达式的效果相同，但是H(x)的优化将比F(x)简单得多
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 第三章 系统设计
 3.1 程序的功能性需求分析
 3.1.1 读入待识别的图像
@@ -419,5 +535,23 @@ while 1:
 cap.release()
 cv2.destroyAllWindows()
 
-4.2 算法实现
+4.2 匹配数据算法
 使用数据库在搜索最匹配的人脸时，为了避免对数据库中的每一项都进行128维数据的欧式距离求解从而导致计算量过大，影响程序的运行时间，因此在存入128维数据时同时也计算出该向量的欧式长度，这样在计算欧氏距离前先比较两者欧式长度的差值是否小于阈值，若欧式长度的差值小于阈值，则其欧式距离必不可能小于阈值，以此方法进行筛选以减少计算量。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+参考文献：
+【1】 Deep Residual Learning for Image Recognition Kaiming He, Xiangyu Zhang,Shaoqing Ren, Jian Sun  Microsoft Research
